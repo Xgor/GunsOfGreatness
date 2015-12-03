@@ -16,7 +16,9 @@ namespace GunsOfGreatness
         *                                * 
         ******************************** */
 
+        public float gunFireRate;
 
+        private float timeUntilFire;
 
         /* *******************************
         *                                *
@@ -24,41 +26,41 @@ namespace GunsOfGreatness
         *                                * 
         ******************************** */
 
-        float gunFireRate;
-        float gunMultiShotSpread;
-        float gunRandomShotSpread;
-        float gunRecoilPower;
-        float gunAmmoCount;
-        float gunReloadSpeed;
-        byte gunWeight; // gunWeight ( Higher weight = lower Speed)
-        int gunDurability;
-        byte gunShotsPerFire = 1;
-        bool gunAutoFire;
-        Color gunColor;
-        Texture2D gunTexture;
+
+        public float gunMultiShotSpread;
+        public float gunRandomShotSpread;
+        public float gunRecoilPower;
+        public float gunAmmoCount;
+        public float gunReloadSpeed;
+        public byte gunWeight; // gunWeight ( Higher weight = lower Speed)
+        public int gunDurability;
+        public byte gunShotsPerFire = 1;
+        public bool gunAutoFire;
+        public Color gunColor;
+        public Texture2D gunTexture;
 
         // Bullet modifiers
-        int bulletDamage;
-        float bulletKnockback;
+        public int bulletDamage;
+        public float bulletKnockback;
 
-        float bulletLifespan;
-        float bulletSpeed;
-        float bulletHomingSpeed;
-        float bulletGravity;
-        float bulletSineWaveStrength;
+        public float bulletLifespan;
+        public float bulletSpeed;
+        public float bulletHomingSpeed;
+        public float bulletGravity;
+        public float bulletSineWaveStrength;
 
-        byte bulletWidth;
-        byte bulletHeight;
-        
-        bool bulletIsRicocheting;
-        bool bulletIsPiercing;
-        bool bulletIsIntangible;
+        public byte bulletWidth;
+        public byte bulletHeight;
 
-        float bulletexplosionSize;
-        int bulletexplosionDamage;
+        public bool bulletIsRicocheting;
+        public bool bulletIsPiercing;
+        public bool bulletIsIntangible;
 
-        Color bulletColor;
-        Texture2D bulletTexture;
+        public float bulletexplosionSize;
+        public int bulletexplosionDamage;
+
+        public Color bulletColor;
+        public Texture2D bulletTexture;
 
         /*
          * Other Possible variables
@@ -93,9 +95,26 @@ namespace GunsOfGreatness
 
         }
 
-        void Fire()
+        public void Update(float deltaTime, float direction)
         {
+            if (timeUntilFire > 0)
+            {
+                timeUntilFire -= deltaTime;
+                if(timeUntilFire < 0)
+                {
+                    timeUntilFire = 0;
+                }
+            }
 
+            if (InputManager.Fire && timeUntilFire == 0)
+            {
+                Fire(direction);
+            }
+        }
+
+        public void Fire(float direction)
+        {
+            timeUntilFire += gunFireRate;
         }
         
     }

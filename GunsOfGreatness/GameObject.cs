@@ -13,10 +13,10 @@ namespace GunsOfGreatness
 {
     class GameObject
     {
-        public const float DIRECTION_RIGHT = 0 , DIRECTION_UPRIGHT = 45     ,
-                           DIRECTION_UP = 90   , DIRECTION_UPLEFT = 135     ,
-                           DIRECTION_LEFT = 180, DIRECTION_DOWNLEFT = 225   ,
-                           DIRECTION_DOWN = 270, DIRECTION_DOWNRIGHT = 315;
+        public const float DIRECTION_RIGHT = 0 , DIRECTION_DOWNRIGHT = 45     ,
+                           DIRECTION_DOWN = 90   , DIRECTION_DOWNLEFT = 135     ,
+                           DIRECTION_LEFT = 180, DIRECTION_UPLEFT = 225   ,
+                           DIRECTION_UP = 270, DIRECTION_UPRIGHT = 315;
 
 
 
@@ -42,16 +42,16 @@ namespace GunsOfGreatness
         {
            
             double directionRad = ( Math.PI / 180) * objectDirection;
-            v_position.X = speed* (float)Math.Cos(directionRad);
-            v_position.Y = speed * (float)Math.Sin(directionRad);
+            v_position.X += speed* (float)Math.Cos(directionRad);
+            v_position.Y += speed * (float)Math.Sin(directionRad);
         }
 
-
-        public virtual void Update(float deltaTime)
+        // Update method (return false to remove from ObjectManager
+        public virtual bool Update(float deltaTime)
         {
-
+            return true;
         }
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             if (sprite != null)
             {
@@ -59,11 +59,8 @@ namespace GunsOfGreatness
             }
             else
             {
-                if (tempSprite == null)
-                {
 
-                }
-                spriteBatch.Draw(tempSprite, v_position, Color.White);
+                spriteBatch.Draw(TextureManager.GetTexture("temp"), v_position, Color.White);
             }
 
         }

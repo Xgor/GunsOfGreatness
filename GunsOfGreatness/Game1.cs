@@ -11,7 +11,7 @@ namespace GunsOfGreatness
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        
         Player player;
         public Game1()
         {
@@ -30,6 +30,7 @@ namespace GunsOfGreatness
             // TODO: Add your initialization logic here
             player = new Player();
             base.Initialize();
+            ObjectManager.AddObject(player);
         }
 
         /// <summary>
@@ -42,8 +43,9 @@ namespace GunsOfGreatness
             spriteBatch = new SpriteBatch(GraphicsDevice);
              
             // TODO: use this.Content to load your game content here
-            player.SetTexture(this.Content, "WhiteSquare");
-            player.SetPosition(100, 100);
+            TextureManager.LoadTextures(this.Content);
+   //         player.SetTexture(this.Content, "tempBox");
+            player.SetPosition(100, 400);
         }
 
         /// <summary>
@@ -70,7 +72,8 @@ namespace GunsOfGreatness
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // TODO: Add your update logic here
-            player.Update(deltaTime);
+            //player.Update(deltaTime);
+            ObjectManager.Update(deltaTime);
 
             base.Update(gameTime);
         }
@@ -85,7 +88,8 @@ namespace GunsOfGreatness
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            player.Draw(spriteBatch);
+            ObjectManager.Draw(spriteBatch);
+            //player.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);
