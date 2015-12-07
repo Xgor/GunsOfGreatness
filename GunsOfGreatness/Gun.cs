@@ -6,8 +6,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+
 namespace GunsOfGreatness
 {
+
+
     class Gun
     {
         /* *******************************
@@ -17,8 +20,12 @@ namespace GunsOfGreatness
         ******************************** */
 
         public float gunFireRate;
+        public bool gunAutoFire = true;
+        BulletModifiers bulletStats;
 
-        private float timeUntilFire;
+        public float gunMultiShotSpread = 10;
+        public byte bulletsPerFire = 3;
+        public float gunShotSpread = 10;
 
         /* *******************************
         *                                *
@@ -27,75 +34,59 @@ namespace GunsOfGreatness
         ******************************** */
 
 
-        public float gunMultiShotSpread;
-        public float gunRandomShotSpread;
+
+        public float gunBulletSpeedVariaton;
         public float gunRecoilPower;
         public float gunAmmoCount;
         public float gunReloadSpeed;
         public byte gunWeight; // gunWeight ( Higher weight = lower Speed)
         public int gunDurability;
-        public byte gunShotsPerFire = 1;
-        public bool gunAutoFire;
+
+
         public Color gunColor;
         public Texture2D gunTexture;
 
-        // Bullet modifiers
-        public int bulletDamage;
-        public float bulletKnockback;
 
-        public float bulletLifespan;
-        public float bulletSpeed;
-        public float bulletHomingSpeed;
-        public float bulletGravity;
-        public float bulletSineWaveStrength;
+        // Private variables
+        private float timeUntilFire;
+        Random rand = new Random();
 
-        public byte bulletWidth;
-        public byte bulletHeight;
 
-        public bool bulletIsRicocheting;
-        public bool bulletIsPiercing;
-        public bool bulletIsIntangible;
-
-        public float bulletexplosionSize;
-        public int bulletexplosionDamage;
-
-        public Color bulletColor;
-        public Texture2D bulletTexture;
 
         /*
          * Other Possible variables
          * 
          * 
-         * bullet element damage
          * 
-         * bulletAcceleration
-         * bulletMaxspeed
-         * bulletDeceleration
-         * 
-         * bulletAccuracy
          * gunChargeShot
-         * 
-         * bulletDestroyOutsideScreen
-         * 
-         * bulletDeterioration
-         * bulletBlocksOtherBullets
-         * 
-         * bulletBoomerangSpeed
-         * 
-         * bulletMagnetizingEnemies
-         * 
-         * bulletSplashBulletAmount;
-         * 
-         * BulletProcs (Slowdown, Freeze, Poison, Fear)
          * 
          * */
 
         public Gun()
         {
+            GenerateGunStats();
+        }
+
+        void GenerateGunStats()
+        {
+            
+
+            gunFireRate = (float)rand.NextDouble()*0.05f+0.05f;
+
+            bulletStats.lifespan = (float)rand.NextDouble()*3+1;
+            bulletStats.speed = rand.Next(250,750);
+
+
+
+
+       //     bulletStats.gravity = (float)rand.NextDouble() -0.25f;
+
+            bulletStats.width = (float)rand.NextDouble()*0.1f + 0.95f;
+            bulletStats.height = (float)rand.NextDouble()*0.1f + 0.95f;
 
         }
 
-        public void Update(float deltaTime, float direction)
+        public void Update(float deltaTime, Vector2 shooterPosition ,float shooterDirection)
         {
             if (timeUntilFire > 0)
             {
@@ -106,15 +97,42 @@ namespace GunsOfGreatness
                 }
             }
 
-            if (InputManager.Fire && timeUntilFire == 0)
+            if (timeUntilFire == 0)
             {
-                Fire(direction);
+                if (gunAutoFire)
+                {
+                    if (InputManager.Fire.active)
+                    {
+                        Fire(shooterPosition, shooterDirection);
+                    }
+                }
+                else
+                {
+                    if (InputManager.Fire.pressed)
+                    {
+                        Fire(shooterPosition, shooterDirection);
+                    }
+                }
             }
         }
 
-        public void Fire(float direction)
+        public void Fire(Vector2 position, float direction)
         {
+
+            if (bulletsPerFire > 1)
+            {
+                for (float dir = (-gunMultiShotSpread * bulletsPerFire) / 2; dir < (gunMultiShotSpread * bulletsPerFire) / 2; dir += gunMultiShotSpread)
+                {
+                    ObjectManager.AddObject(new Bullet(bulletStats, position, gunShotSpread * ((float)rand.NextDouble() - 0.5f) + direction + dir));
+                }
+            }
+            else
+            {
+                ObjectManager.AddObject(new Bullet(bulletStats, position,gunShotSpread *((float)rand.NextDouble()-0.5f) + direction));
+            }
             timeUntilFire += gunFireRate;
+
+
         }
         
     }

@@ -14,6 +14,7 @@ namespace GunsOfGreatness
         public static void LoadTextures(ContentManager contentManager)
         {
             textures.Add("temp", contentManager.Load<Texture2D>("tempBox"));
+            textures.Add("bullet", contentManager.Load<Texture2D>("bullet"));
         }
 
         public static Texture2D GetTexture(string texture)

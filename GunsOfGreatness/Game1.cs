@@ -64,7 +64,7 @@ namespace GunsOfGreatness
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            InputManager.UpdateInput();
+            InputManager.UpdateManager();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -87,7 +87,7 @@ namespace GunsOfGreatness
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.BackToFront,BlendState.NonPremultiplied);
             ObjectManager.Draw(spriteBatch);
             //player.Draw(spriteBatch);
             spriteBatch.End();

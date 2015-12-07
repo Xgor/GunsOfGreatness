@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Utilities;
 
+
 namespace GunsOfGreatness
 {
     class GameObject
@@ -23,7 +24,10 @@ namespace GunsOfGreatness
         protected Vector2 v_position;
         protected float objectDirection;
         protected Texture2D sprite;
-        static Texture2D tempSprite;
+
+        protected Rectangle sourceRect;
+        
+//        protected 
 
         public void SetDirection(float direction) { objectDirection = direction; }
 
@@ -33,9 +37,47 @@ namespace GunsOfGreatness
         public void Move(Vector2 position) { v_position += position; }
         public void Move(float x, float y) { v_position += new Vector2(x, y); }
 
-        public void SetTexture(ContentManager contentManager, string assetName)
+        protected float rotation = 0;
+        protected Vector2 origin = Vector2.Zero;
+
+        protected Vector2 scale = Vector2.One;
+        protected float depth = 0;
+
+        
+        public void SetSprite(ContentManager contentManager, string assetName)
         {
             sprite = contentManager.Load<Texture2D>(assetName);
+            sourceRect = sprite.Bounds;
+            origin = sprite.Bounds.Center.ToVector2();
+        }
+
+        public void SetSprite(string textureKey)
+        {
+            sprite = TextureManager.GetTexture(textureKey);
+            sourceRect = sprite.Bounds;
+            origin = sprite.Bounds.Center.ToVector2();
+        }
+
+        public void SetSprite(Texture2D texture)
+        {
+            sprite = texture;
+            sourceRect = sprite.Bounds;
+            origin = sprite.Bounds.Center.ToVector2();
+        }
+
+
+        public void SetSprite(string textureKey, Rectangle textRect)
+        {
+            sprite = TextureManager.GetTexture(textureKey);
+            sourceRect = textRect;
+            origin = sprite.Bounds.Center.ToVector2();
+        }
+
+        public void SetSprite(Texture2D texture, Rectangle textRect)
+        {
+            sprite = texture;
+            sourceRect = textRect;
+            origin = sprite.Bounds.Center.ToVector2();
         }
 
         public void MoveDirection(float speed)
@@ -51,16 +93,24 @@ namespace GunsOfGreatness
         {
             return true;
         }
+
         public void Draw(SpriteBatch spriteBatch)
         {
+            
             if (sprite != null)
             {
-                spriteBatch.Draw(sprite, v_position, Color.White);
+         //       spriteBatch.Draw(sprite, v_position, sourceRect, Color.White);
+                spriteBatch.Draw(
+                    sprite, v_position, sourceRect, Color.White, 
+                    rotation,origin,scale,SpriteEffects.None,depth);
+            
             }
             else
             {
-
-                spriteBatch.Draw(TextureManager.GetTexture("temp"), v_position, Color.White);
+                origin = TextureManager.GetTexture("temp").Bounds.Center.ToVector2();
+                sourceRect = TextureManager.GetTexture("temp").Bounds;
+                spriteBatch.Draw(TextureManager.GetTexture("temp"), v_position, sourceRect, Color.White,
+                    rotation, origin,scale, SpriteEffects.None, depth);
             }
 
         }

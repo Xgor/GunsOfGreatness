@@ -22,6 +22,7 @@ namespace GunsOfGreatness
             {
                 if (!listAllObjects[i].Update(deltaTime))
                 {
+                    listAllObjects[i] = null;
                     listAllObjects.RemoveAt(i);
                 }
             }

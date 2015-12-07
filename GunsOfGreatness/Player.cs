@@ -20,13 +20,19 @@ namespace GunsOfGreatness
 
         protected float aimDirection;
 
-        Gun mainGun;
-/*
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(sprite, v_position, Color.White);
-        }
-*/
+        Gun mainGun = new Gun();
+        /*
+                public void Draw(SpriteBatch spriteBatch)
+                {
+                    spriteBatch.Draw(sprite, v_position, Color.White);
+                }
+
+                public Player()
+                {
+
+                }
+        */
+
         bool Deceleration(float deltaTime)
         {
             if(hSpeed == 0)
@@ -64,13 +70,13 @@ namespace GunsOfGreatness
         {
 
 
-            if (InputManager.Left)
+            if (InputManager.Left.active)
             {
-                if (InputManager.Down)
+                if (InputManager.Down.active)
                 {
                     aimDirection = DIRECTION_DOWNLEFT;
                 }
-                else if (InputManager.Up)
+                else if (InputManager.Up.active)
                 {
                     aimDirection = DIRECTION_UPLEFT;
                 }
@@ -85,13 +91,13 @@ namespace GunsOfGreatness
                 }
                 hSpeed -= HSPEED_ACCELERATION * deltaTime;
             }
-            else if (InputManager.Right)
+            else if (InputManager.Right.active)
             {
-                if (InputManager.Down)
+                if (InputManager.Down.active)
                 {
                     aimDirection = DIRECTION_DOWNRIGHT;
                 }
-                else if (InputManager.Up)
+                else if (InputManager.Up.active)
                 {
                     aimDirection = DIRECTION_UPRIGHT;
                 }
@@ -106,12 +112,12 @@ namespace GunsOfGreatness
                 }
                 hSpeed += HSPEED_ACCELERATION * deltaTime;
             }
-            else if (InputManager.Up)
+            else if (InputManager.Up.active)
             {
                 aimDirection = DIRECTION_UP;
                 Deceleration(deltaTime);
             }
-            else if (InputManager.Down)
+            else if (InputManager.Down.active)
             {
                 aimDirection = DIRECTION_DOWN;
                 Deceleration(deltaTime);
@@ -120,14 +126,13 @@ namespace GunsOfGreatness
             {
                 Deceleration(deltaTime);
             }
+           
 
-            if(InputManager.Fire)
-            {
-                ObjectManager.AddObject(new Bullet(v_position,aimDirection));
-            }
 
             hSpeed =MathHelper.Clamp(hSpeed, -HSPEED_MAXSPEED, HSPEED_MAXSPEED);
             Move(hSpeed * Vector2.UnitX);
+
+            mainGun.Update(deltaTime,v_position, aimDirection);
 
             return true;
         }
