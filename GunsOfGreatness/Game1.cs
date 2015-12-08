@@ -30,6 +30,7 @@ namespace GunsOfGreatness
             // TODO: Add your initialization logic here
             player = new Player();
             base.Initialize();
+            LevelManager.SetLevel("Content/TiledTest.tmx");
             ObjectManager.AddObject(player);
         }
 
@@ -45,7 +46,7 @@ namespace GunsOfGreatness
             // TODO: use this.Content to load your game content here
             TextureManager.LoadTextures(this.Content);
    //         player.SetTexture(this.Content, "tempBox");
-            player.SetPosition(100, 400);
+            player.SetPosition(100, 432);
         }
 
         /// <summary>
@@ -88,7 +89,11 @@ namespace GunsOfGreatness
 
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront,BlendState.NonPremultiplied);
+            
+
+            
             ObjectManager.Draw(spriteBatch);
+            LevelManager.Draw(spriteBatch);
             //player.Draw(spriteBatch);
             spriteBatch.End();
 

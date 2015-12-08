@@ -131,7 +131,8 @@ namespace GunsOfGreatness
             {
                 return false;
             }
-            return true;
+
+            return LevelManager.CollisionCheck(v_position);
         }
     }
 }

@@ -34,8 +34,21 @@ namespace GunsOfGreatness
         public void SetPosition(Vector2 position) { v_position = position; }
         public void SetPosition(float x, float y) { v_position = new Vector2(x, y); }
 
-        public void Move(Vector2 position) { v_position += position; }
-        public void Move(float x, float y) { v_position += new Vector2(x, y); }
+        public void Move(Vector2 position) 
+        {
+            if (LevelManager.CollisionCheck(v_position + position))
+            {
+                v_position += position;
+            }
+       }
+        
+        public void Move(float x, float y) 
+        {
+            if (LevelManager.CollisionCheck(v_position + new Vector2(x, y)))
+            {
+                v_position += new Vector2(x, y);
+            }
+        }
 
         protected float rotation = 0;
         protected Vector2 origin = Vector2.Zero;

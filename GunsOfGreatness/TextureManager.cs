@@ -15,6 +15,7 @@ namespace GunsOfGreatness
         {
             textures.Add("temp", contentManager.Load<Texture2D>("tempBox"));
             textures.Add("bullet", contentManager.Load<Texture2D>("bullet"));
+            textures.Add("collTileset", contentManager.Load<Texture2D>("CollisionTileset"));
         }
 
         public static Texture2D GetTexture(string texture)
