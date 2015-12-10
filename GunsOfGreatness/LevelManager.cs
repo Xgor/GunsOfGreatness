@@ -90,7 +90,7 @@ namespace GunsOfGreatness
             int collIdentifier = 0;
 
             collIdentifier += (int)Math.Floor(  objectPos.X / tileWidth);
-            collIdentifier += (int)Math.Floor( objectPos.Y / tileHeight)*mapWidth;
+            collIdentifier += (int)Math.Floor(objectPos.Y / tileHeight) * mapWidth;
 
      //       Console.WriteLine(Math.Floor( / objectPos.X).ToString() + "," + Math.Floor(tileHeight / objectPos.Y).ToString());
             if (collIdentifier < 0 || collIdentifier > mapWidth*mapHeight-1)
@@ -106,7 +106,42 @@ namespace GunsOfGreatness
             return true;
 
         }
-            
+
+
+
+        public static bool CollisionCheck(float xPos, float yPos, int objWidth, int objHeight)
+        {
+
+            for (int y = (int)Math.Floor(yPos / tileHeight); y < (int)Math.Ceiling(yPos / tileHeight + objHeight / tileHeight); y++)
+            {
+                for (int x = (int)Math.Floor(xPos / tileWidth); x < (int)Math.Ceiling(xPos / tileWidth + objWidth / tileWidth); x++)
+                {
+                    Console.WriteLine((x + y * mapWidth).ToString());
+                    if (x + y * mapWidth < 0 || x + y * mapWidth > mapWidth * mapHeight - 1)
+                    {
+                        return false;
+                    }
+
+                    if (levelCollisionList[x + y * mapWidth] == 2)
+                    {
+                        return false;
+                    }
+                }
+
+            }
+            return true;
+    //        int x = (int)Math.Floor(xPos / tileWidth); x < (int)Math.Floor(xPos / tileWidth + objWidth); x++
+        }
+
+        public static bool CollisionCheck(Vector2 positon,int objWidth,int objHeight)
+        {
+            return CollisionCheck(positon.X, positon.Y, objWidth, objHeight);
+        }
+
+        public static bool CollisionCheck(Rectangle rectColl)
+        {
+            return CollisionCheck(rectColl.X, rectColl.Y, rectColl.Width, rectColl.Height);
+        }
 
         public static void Draw(SpriteBatch spriteBatch)
         {

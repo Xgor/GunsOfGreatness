@@ -46,7 +46,7 @@ namespace GunsOfGreatness
             // TODO: use this.Content to load your game content here
             TextureManager.LoadTextures(this.Content);
    //         player.SetTexture(this.Content, "tempBox");
-            player.SetPosition(100, 432);
+            player.SetPosition(100, 400);
         }
 
         /// <summary>

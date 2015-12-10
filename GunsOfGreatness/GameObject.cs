@@ -29,25 +29,33 @@ namespace GunsOfGreatness
         
 //        protected 
 
+
+        Rectangle collRect;
+
+
         public void SetDirection(float direction) { objectDirection = direction; }
 
         public void SetPosition(Vector2 position) { v_position = position; }
         public void SetPosition(float x, float y) { v_position = new Vector2(x, y); }
 
-        public void Move(Vector2 position) 
+        public void Move(Vector2 position)
         {
-            if (LevelManager.CollisionCheck(v_position + position))
+            if (IsFree(position))
             {
                 v_position += position;
             }
-       }
-        
-        public void Move(float x, float y) 
+        }
+
+        public void Move(float x, float y)
         {
-            if (LevelManager.CollisionCheck(v_position + new Vector2(x, y)))
-            {
-                v_position += new Vector2(x, y);
-            }
+            Move(new Vector2(x, y));
+        }
+
+
+        
+        public bool IsFree(Vector2 position)
+        {
+            return LevelManager.CollisionCheck(v_position + position - sourceRect.Width / 2 * Vector2.UnitX - sourceRect.Height / 2 * Vector2.UnitY, sourceRect.Width, sourceRect.Height);
         }
 
         protected float rotation = 0;

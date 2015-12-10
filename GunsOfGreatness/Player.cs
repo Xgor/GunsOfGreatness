@@ -130,7 +130,14 @@ namespace GunsOfGreatness
 
 
             hSpeed =MathHelper.Clamp(hSpeed, -HSPEED_MAXSPEED, HSPEED_MAXSPEED);
-            Move(hSpeed * Vector2.UnitX);
+            if (IsFree(hSpeed * Vector2.UnitX))
+            {
+                Move(hSpeed * Vector2.UnitX);
+            }
+            else
+            {
+                hSpeed = 0;
+            }
 
             mainGun.Update(deltaTime,v_position, aimDirection);
 
